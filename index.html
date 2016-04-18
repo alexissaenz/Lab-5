@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Retorno</title>
+    <link href="css/leaflet.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+
+</head>
+<body>
+<div id="map"> </div>
+</body>
+<script src="js/jquery-2.1.0.min.js"></script>
+<script src="js/reqwest.min.js"></script>
+<script src="js/leaflet.js"></script>
+<script src="js/Leaflet.Instagram.js"></script>
+<script>
+$(document).ready(function(){
+xhr = new XMLHttpRequest();
+    xhr.open("GET", "http://files.elatlas.org/geometry.php", false);
+    xhr.send();
+    var APIresponse = JSON.parse(xhr.responseText);
+   console.log(APIresponse);
+
+    var map = L.map('map', {
+        center: [6.308600, -75.572466],
+        zoom: 13
+    });
+    L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+    }).addTo(map);
+
+    L.instagram("https://api.instagram.com/v1/users/self/media/recent/?access_token=3128462717.a002c50.ea8bc909026141caad8b82511f8f1e59", {maxWidth: 500}).addTo(map);
+
+    var myStyle = {
+        "color": "#ff7800",
+        "weight": 5,
+        "opacity": 0.65
+    };
+    L.geoJson(APIresponse, {
+        style: myStyle
+    }).addTo(map);
+
+
+});
+
+</script>
+</html>
